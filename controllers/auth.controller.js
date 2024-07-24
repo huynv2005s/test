@@ -5,7 +5,7 @@ const register = async (req, res) => {
         name: req.body.userName,
         password: req.body.password
     })
-    console.log(req.body)
+    // console.log(req.body)
     res.status(200).json({ message: 'success' })
 }
 const login = async (req, res) => {
@@ -13,7 +13,6 @@ const login = async (req, res) => {
         name: req.body.userName,
         password: req.body.password
     })
-    console.log('user', req.body)
     if (!user) {
         res.status(500).json({ message: 'login not successful' })
     } else {

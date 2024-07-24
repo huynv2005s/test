@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routers/userRouter.js')
 const authRouter = require('./routers/auth.router.js')
 const profileRouter = require('./routers/profile.router.js')
+const dotenv = require('dotenv')
+dotenv.config()
+//mid
+
 // cookie
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
@@ -30,10 +34,10 @@ app.use('/auth', authRouter)
 app.use('/profile', profileRouter)
 
 
-mongoose.connect('mongodb://localhost:27017/demo')
+mongoose.connect(process.env.DB_URL)
     .then(() => {
-        app.listen(3000, () => {
-            console.log('oke')
+        app.listen(process.env.PORT || 8000, () => {
+            console.log('http://localhost:' + process.env.PORT)
         })
     })
     .catch(err => { console.log(err) })
