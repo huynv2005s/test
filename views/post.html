@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="../static/css/all.css">
+<style>
+    .hidden {
+        display: none;
+    }
+
+    #formPost {
+        width: 400px;
+    }
+
+    #formPost form {
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        padding: 20px
+    }
+
+    #myPost {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    #myPost .post {
+        padding: 10px;
+        border: 1px solid black;
+        width: calc(20% - 10px);
+    }
+
+    .actonPost {
+        text-align: right;
+    }
+</style>
+
+<button onclick="showPost()">+</button>
+<div id="formPost" class="hidden">
+    <form action="../post/createPost" method="post">
+        <label for="">Title</label>
+        <input type="text" name="title">
+        <label for="">Description</label>
+        <input type="text" name="description">
+        <button type="submit"> Add </button>
+    </form>
+</div>
+<div id="myPost">
+
+</div>
+<div id="formAction" class="hidden">
+    <form action="../post/createPost" method="post">
+        <label for="">Title</label>
+        <input id="titleEdit" type="text" name="title">
+        <label for="">Description</label>
+        <input id="descriptionEdit" type="text" name="description">
+        <button type="submit"> Edit </button>
+    </form>
+</div>
+<script>
+    function showPost() {
+        document.getElementById("formPost").classList.toggle("hidden")
+    }
+    function loadFormEditPost(id, title, description) {
+        console.log(id, title, description)
+        // document.getElementById('formAction').classList.add('hidden')
+        // document.getElementById('titleEdit').value = ''
+        // document.getElementById('descriptionEdit').value = ''
+        document.getElementById('formAction').classList.remove('hidden')
+        document.getElementById('titleEdit').value = title
+        document.getElementById('descriptionEdit').value = description
+    }
+    async function loadPost() {
+        const response = await fetch('http://localhost:8080/post/getPost');
+        const json = await response.json()
+        console.log(json)
+        json.forEach(item => {
+            let post = document.createElement('div')
+            post.innerHTML = `
+                <p class="titlePost">${item.title}</p>
+                <p class="descriptionPost">${item.description}</p>
+                <p class="datePost">${item.createAt}</p>
+                <div class="actonPost">
+                    <span onclick=loadFormEditPost(${item._id},${item.title},${item.description})>
+                        <i class="fa-solid fa-pencil"></i>
+                    </span>
+                    <span >
+                        <i class="fa-solid fa-trash"></i>
+                    </span>
+                </div>
+            `
+            post.classList.add("post")
+            // console.log(item)
+            document.getElementById('myPost').appendChild(post)
+        })
+    }
+    loadPost()
+
+</script>

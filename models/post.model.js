@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    name: String,
-    password: String
+    title: String,
+    description: String,
+    author: String,
+    createAt: {
+        type: String,
+        default: new Date()
+    }
 })
-const postModel = mongoose.model('Post', postSchema)
-module.exports = userModel
+const postModel = mongoose.model('Posts', postSchema)
+module.exports = postModel
